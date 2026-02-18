@@ -1,0 +1,32 @@
+graph TD
+    subgraph P1[Phase 1: Bootstrap]
+        A[Shared Library Checkout] --> B[YAML Config Comparison]
+        B --> C{Validation}
+    end
+
+    subgraph P2[Phase 2: Secret Injection]
+        C -- Success --> D[Fetch Certificates from Vault]
+        D --> E[Mount Volumes: /certs/*]
+    end
+
+    subgraph P3[Phase 3: Core Readiness]
+        E --> F[Common Environment Deployment]
+        F --> G[Consul & Vault Data Init]
+    end
+
+    subgraph P4[Phase 4: Service Lifecycle]
+        G --> H[Service Up: Deploy Application]
+    end
+
+    subgraph P5[Phase 5: Quality Gates]
+        H --> I{Security & BDP Gate}
+        I -- Fail --> J[STOP: Immediate Failure]
+        I -- Pass --> K[Dependent Services Logic]
+        K --> L[Integration & Regression BDD]
+    end
+
+    style J fill:#f96,stroke:#333,stroke-width:2px
+    style L fill:#bbf,stroke:#333,stroke-width:2px
+    style P1 fill:#f5f5f5,stroke:#333,stroke-dasharray: 5 5
+    style P5 fill:#f5f5f5,stroke:#333,stroke-dasharray: 5 5
+    
